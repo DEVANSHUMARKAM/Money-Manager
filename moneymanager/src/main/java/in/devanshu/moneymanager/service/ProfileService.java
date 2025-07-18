@@ -4,6 +4,7 @@ import in.devanshu.moneymanager.dto.AuthDTO;
 import in.devanshu.moneymanager.dto.ProfileDTO;
 import in.devanshu.moneymanager.entity.ProfileEntity;
 import in.devanshu.moneymanager.repository.ProfileRepository;
+import in.devanshu.moneymanager.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ public class ProfileService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     public ProfileDTO registerProfile(ProfileDTO profileDTO) {
         ProfileEntity newProfile = toEntity(profileDTO);
@@ -104,8 +106,9 @@ public class ProfileService {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword()));
 
+            String token = jwtUtil.generateToken(authDTO.getEmail());
             return Map.of(
-                    "token", "JWT token",
+                    "token", token,
                     "user", getPublicProfile(authDTO.getEmail())
             );
         } catch (Exception e) {
