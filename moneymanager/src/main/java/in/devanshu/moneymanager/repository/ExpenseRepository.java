@@ -2,6 +2,7 @@ package in.devanshu.moneymanager.repository;
 
 import in.devanshu.moneymanager.entity.ExpenseEntity;
 import org.apache.commons.math3.analysis.function.Exp;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +35,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 
     //select * from tbl_expenses where profile_id = ?1 and date between ?2 and ?3
     List<ExpenseEntity> findByProfileIdAndDateBetween(Long profileId, LocalDate startDate, LocalDate endDate);
+
+    //select * from tbl_expenses where profile_id = ?1 and date = ?2
+    List<ExpenseEntity> findByProfileIdAndDate(Long profileId, LocalDate date);
 }

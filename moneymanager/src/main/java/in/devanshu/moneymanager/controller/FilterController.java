@@ -40,7 +40,7 @@ public class FilterController {
             List<ExpenseDTO> expenses = expenseService.filterExpenses(startDate, endDate, keyword, sort);
             return ResponseEntity.ok(expenses);
         }else {
-            return ResponseEntity.badRequest().body("Invalid tyep.. Must be 'income' or 'expense'");
+            return ResponseEntity.badRequest().body("Invalid type.. Must be 'income' or 'expense'");
         }
     }
 }

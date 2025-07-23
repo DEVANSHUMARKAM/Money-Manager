@@ -1,0 +1,4 @@
+#Postgresql Configuration
+spring.datasource.url=jdbc:postgresql://dpg-d204qj3e5dus73d1gj9g-a.frankfurt-postgres.render.com/moneymanager_eh0e
+spring.datasource.username=moneymanager_eh0e_user
+spring.datasource.password=S2mD6eEWcCg8ynvTTA0UmSFqZXt3RhOJ
