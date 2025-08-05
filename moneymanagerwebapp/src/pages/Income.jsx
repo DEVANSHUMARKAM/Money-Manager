@@ -5,7 +5,6 @@ import axiosConfig from "../util/axiosConfig.jsx";
 import {API_ENDPOINTS} from "../util/apiEndpoints.js";
 import toast from "react-hot-toast";
 import IncomeList from "../components/IncomeList.jsx";
-import log from "eslint-plugin-react/lib/util/log.js";
 import Modal from "../components/Modal.jsx";
 import {Plus} from "lucide-react";
 import AddIncomeForm from "../components/AddIncomeForm.jsx";
@@ -33,12 +32,12 @@ const Income = () => {
         try {
             const response = await axiosConfig.get(API_ENDPOINTS.GET_ALL_INCOMES);
             if (response.status === 200) {
-               setIncomeData(response.data);
+                setIncomeData(response.data);
             }
-        }catch(error) {
+        } catch(error) {
             console.error('Failed to fetch income details:', error);
             toast.error(error.response?.data?.message || "Failed to fetch income details");
-        }finally {
+        } finally {
             setLoading(false);
         }
     }
@@ -51,17 +50,17 @@ const Income = () => {
                 console.log('income categories', response.data);
                 setCategories(response.data);
             }
-        }catch(error) {
+        } catch(error) {
             console.log('Failed to fetch income categories:', error);
-            toast.error(error.data?.message || "Failed to fetch income categories");
+            toast.error(error.response?.data?.message || "Failed to fetch income categories");
         }
     }
 
-    //save the income details
+    // Save the income details
     const handleAddIncome = async (income) => {
         const {name, amount, date, icon, categoryId} = income;
 
-        //validation
+        // Validation
         if (!name.trim()) {
             toast.error("Please enter a name");
             return;
@@ -95,33 +94,33 @@ const Income = () => {
                 date,
                 icon,
                 categoryId,
-            })
+            });
             if (response.status === 201) {
                 setOpenAddIncomeModal(false);
                 toast.success("Income added successfully");
                 fetchIncomeDetails();
                 fetchIncomeCategories();
             }
-        }catch(error){
+        } catch(error) {
             console.log('Error adding income', error);
-            toast.error(error.response?.data?.message || "Failed to adding income");
+            toast.error(error.response?.data?.message || "Failed to add income");
         }
     }
 
-    //delete income details
+    // Delete income details
     const deleteIncome = async (id) => {
         try {
             await axiosConfig.delete(API_ENDPOINTS.DELETE_INCOME(id));
             setOpenDeleteAlert({show: false, data: null});
             toast.success("Income deleted successfully");
             fetchIncomeDetails();
-        }catch(error) {
+        } catch(error) {
             console.log('Error deleting income', error);
             toast.error(error.response?.data?.message || "Failed to delete income");
         }
     }
 
-    const handleDownloadIncomeDetails = async() => {
+    const handleDownloadIncomeDetails = async () => {
         try {
             const response = await axiosConfig.get(API_ENDPOINTS.INCOME_EXCEL_DOWNLOAD, {responseType: "blob"});
             let filename = "income_details.xlsx";
@@ -133,8 +132,8 @@ const Income = () => {
             link.click();
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
-            toast.success("Download income details successfully");
-        }catch(error) {
+            toast.success("Income details downloaded successfully");
+        } catch(error) {
             console.error('Error downloading income details:', error);
             toast.error(error.response?.data?.message || "Failed to download income");
         }
@@ -146,7 +145,7 @@ const Income = () => {
             if (response.status === 200) {
                 toast.success("Income details emailed successfully");
             }
-        }catch(error) {
+        } catch(error) {
             console.error('Error emailing income details:', error);
             toast.error(error.response?.data?.message || "Failed to email income");
         }
@@ -154,7 +153,7 @@ const Income = () => {
 
     useEffect(() => {
         fetchIncomeDetails();
-        fetchIncomeCategories()
+        fetchIncomeCategories();
     }, []);
 
     return (
@@ -162,12 +161,16 @@ const Income = () => {
             <div className="my-5 mx-auto">
                 <div className="grid grid-cols-1 gap-6">
                     <div>
-                        {/* overview for income with line char */}
-                        <IncomeOverview transactions={incomeData} onAddIncome={() => setOpenAddIncomeModal(true)} />
+                        {/* overview for income with line chart */}
+                        <IncomeOverview 
+                            transactions={incomeData} 
+                            onAddIncome={() => setOpenAddIncomeModal(true)} 
+                        />
                     </div>
 
                     <IncomeList
                         transactions={incomeData}
+                        loading={loading}
                         onDelete={(id) => setOpenDeleteAlert({show: true, data: id})}
                         onDownload={handleDownloadIncomeDetails}
                         onEmail={handleEmailIncomeDetails}
@@ -192,7 +195,7 @@ const Income = () => {
                         title="Delete Income"
                     >
                         <DeleteAlert
-                            content="Are you sure want to delete this income details?"
+                            content="Are you sure you want to delete this income record?"
                             onDelete={() => deleteIncome(openDeleteAlert.data)}
                         />
                     </Modal>
