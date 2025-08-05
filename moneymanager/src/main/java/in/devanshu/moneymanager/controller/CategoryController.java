@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/categories")
+@RequestMapping("/api/v1.0/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -28,13 +28,13 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("/api/v1.0/{type}")
     public ResponseEntity<List<CategoryDTO>> getCategoriesByTypeForCurrentUser(@PathVariable String type){
         List<CategoryDTO> list = categoryService.getCategoriesByTypeForCurrentUser(type);
         return ResponseEntity.ok(list);
     }
 
-    @PutMapping("/{categoryId}")
+    @PutMapping("/api/v1.0/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId
     , @RequestBody CategoryDTO categoryDTO){
         CategoryDTO updatedCategory = categoryService.updateCategory(categoryId, categoryDTO);

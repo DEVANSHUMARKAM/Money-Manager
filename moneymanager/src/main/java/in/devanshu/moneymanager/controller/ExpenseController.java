@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/expenses")
+@RequestMapping("/api/v1.0/expenses")
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -30,7 +30,7 @@ public class ExpenseController {
         return ResponseEntity.ok(expenses);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1.0/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Long id){
         expenseService.deleteExpense(id);
         return ResponseEntity.noContent().build();

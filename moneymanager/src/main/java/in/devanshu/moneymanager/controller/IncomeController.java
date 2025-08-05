@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/incomes")
+@RequestMapping("/api/v1.0/incomes")
 public class IncomeController {
 
     private final IncomeService incomeService;
@@ -31,7 +31,7 @@ public class IncomeController {
         return ResponseEntity.ok(expenses);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1.0/{id}")
     public ResponseEntity<Void> deleteIncome(@PathVariable Long id){
         incomeService.deleteIncome(id);
         return ResponseEntity.noContent().build();
